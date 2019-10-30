@@ -1,0 +1,102 @@
+service: tone-analyzer-api
+
+# Create an optimized package for our functions
+package:
+  individually: true
+
+plugins:
+  - serverless-bundle # Package our functions with Webpack
+  - serverless-offline
+
+provider:
+  name: aws
+  runtime: nodejs8.10
+  stage: prod
+  region: us-east-2
+
+  # 'iamRoleStatements' defines the permission policy for the Lambda function.
+  # In this case Lambda functions are granted with permissions to access DynamoDB.
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:DescribeTable
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+      Resource: "arn:aws:dynamodb:us-east-2:*:*"
+
+# Create our resources with separate CloudFormation templates
+resources:
+  # API Gateway Errors
+  - ${file(resources/api-gateway-errors.yml)}
+
+functions:
+  # Defines an HTTP API endpoint that calls the main function in createEntry.js
+  # - path: url path is /entries
+  # - method: POST request
+  # - cors: enabled CORS (Cross-Origin Resource Sharing) for browser cross
+  #     domain api call
+  # - authorizer: authenticate using the AWS IAM role
+  createEntry:
+    handler: createEntry.main
+    events:
+      - http:
+          path: entries
+          method: post
+          cors: true
+          authorizer: aws_iam
+
+  getEntry:
+    # Defines an HTTP API endpoint that calls the main function in getEntry.js
+    # - path: url path is /entries/{id}
+    # - method: GET request
+    handler: getEntry.main
+    events:
+      - http:
+          path: entries/{id}
+          method: get
+          cors: true
+          authorizer: aws_iam
+
+  listEntries:
+    # Defines an HTTP API endpoint that calls the main function in listEntries.js
+    # - path: url path is /entries
+    # - method: GET request
+    handler: listEntries.main
+    events:
+      - http:
+          path: entries
+          method: get
+          cors: true
+          authorizer: aws_iam
+
+  updateEntry:
+    # Defines an HTTP API endpoint that calls the main function in updateEntry.js
+    # - path: url path is /entries/{id}
+    # - method: PUT request
+    handler: updateEntry.main
+    events:
+      - http:
+          path: entries/{id}
+          method: put
+          cors: true
+          authorizer: aws_iam
+
+  deleteEntry:
+    # Defines an HTTP API endpoint that calls the main function in deleteEntry.js
+    # - path: url path is /entries/{id}
+    # - method: DELETE request
+    handler: deleteEntry.main
+    events:
+      - http:
+          path: entries/{id}
+          method: delete
+          cors: true
+          authorizer: aws_iam
+
+
+
+

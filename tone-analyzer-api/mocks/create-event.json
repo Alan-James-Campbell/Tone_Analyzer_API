@@ -1,0 +1,8 @@
+{
+  "body": "{\"content\":\"hello world\",\"title\":\"this is the title\",\"analysis\":\"this is the analysis\"}",
+  "requestContext": {
+    "identity": {
+      "cognitoIdentityId": "USER-SUB-1234"
+    }
+  }
+}
