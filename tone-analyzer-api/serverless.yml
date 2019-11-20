@@ -42,18 +42,6 @@ provider:
     Resource:
       - "Fn::GetAtt": [ EntriesTable, Arn ]
 
-# Create our resources with separate CloudFormation templates
-resources:
-  # API Gateway Errors
-  - ${file(resources/api-gateway-errors.yml)}
-  # DynamoDB
-  - ${file(resources/dynamodb-table.yml)}
-  # S3
-  - ${file(resources/s3-bucket.yml)}
-  # Cognito
-  - ${file(resources/cognito-user-pool.yml)}
-  - ${file(resources/cognito-identity-pool.yml)}
-
 functions:
   # Defines an HTTP API endpoint that calls the main function in createEntry.js
   # - path: url path is /entries
@@ -116,16 +104,20 @@ functions:
           path: entries/{id}
           method: delete
           cors: true
-          authorizer: aws_iam  
-
-  analyzeEntry:
-    handler: analyzeEntry.main
-    events:
-      - http:
-          path: entries/analyzeEntry
-          method: post
-          cors: true
           authorizer: aws_iam
+
+# Create our resources with separate CloudFormation templates
+resources:
+  # API Gateway Errors
+  - ${file(resources/api-gateway-errors.yml)}
+  # DynamoDB
+  - ${file(resources/dynamodb-table.yml)}
+  # S3
+  - ${file(resources/s3-bucket.yml)}
+  # Cognito
+  - ${file(resources/cognito-user-pool.yml)}
+  - ${file(resources/cognito-identity-pool.yml)}
+
 
 
 
