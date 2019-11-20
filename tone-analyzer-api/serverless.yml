@@ -106,6 +106,18 @@ functions:
           cors: true
           authorizer: aws_iam
 
+  analyzeEntry:
+    # Defines an HTTP API endpoint that calls the main function in analyzeEntry.js
+    # - path: url path is /entries/analyzeEntry
+    # - method: POST request
+    handler: analyzeEntry.main
+    events:
+      - http:
+          path: entries/analyzeEntry
+          method: post
+          cors: true
+          authorizer: aws_iam
+
 # Create our resources with separate CloudFormation templates
 resources:
   # API Gateway Errors
