@@ -116,7 +116,17 @@ functions:
           path: entries/{id}
           method: delete
           cors: true
+          authorizer: aws_iam  
+
+  analyzeEntry:
+    handler: analyzeEntry.main
+    events:
+      - http:
+          path: entries/analyzeEntry
+          method: post
+          cors: true
           authorizer: aws_iam
+
 
 
 
