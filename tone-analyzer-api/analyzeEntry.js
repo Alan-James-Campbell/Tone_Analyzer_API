@@ -8,14 +8,15 @@ const toneAnalyzer = new ToneAnalyzerV3({
 });
 
 export async function main(event, context) {
-  const { text } = JSON.parse(event.body);
+  const data = JSON.parse(event.body);
+  const text = data.text
   const toneParams = {toneInput: { text }, contentType: 'application/json'};
   let toneAnalysis;
 
 
   try {
     toneAnalysis = await toneAnalyzer.tone(toneParams);
-    return success(toneAnalysis);
+    return toneAnalysis;
   } catch (e) {
     return failure({ status: false });
   }
