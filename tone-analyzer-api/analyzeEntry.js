@@ -1,4 +1,4 @@
-import { success, failure } from "./libs/response-lib";
+import { failure } from "./libs/response-lib";
 const ToneAnalyzerV3 = require('ibm-watson/tone-analyzer/v3');
 const { IamAuthenticator } = require('ibm-watson/auth');
 const toneAnalyzer = new ToneAnalyzerV3({
@@ -9,7 +9,7 @@ const toneAnalyzer = new ToneAnalyzerV3({
 
 export async function main(event, context) {
   const data = JSON.parse(event.body);
-  const text = data.text
+  const text = data.text;
   const toneParams = {toneInput: { text }, contentType: 'application/json'};
   let toneAnalysis;
 
