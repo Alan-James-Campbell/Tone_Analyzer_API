@@ -5,7 +5,7 @@ import { success, failure } from "./libs/response-lib";
 export async function main(event, context) {
   const data = JSON.parse(event.body);
   const params = {
-    TableName: "entries",
+    TableName: "dev-entries",
     Item: {
       userId: event.requestContext.identity.cognitoIdentityId,
       entryId: uuid.v1(),

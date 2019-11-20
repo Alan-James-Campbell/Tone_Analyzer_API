@@ -1,4 +1,4 @@
-import { failure } from "./libs/response-lib";
+import { success, failure } from './libs/response-lib';
 const ToneAnalyzerV3 = require('ibm-watson/tone-analyzer/v3');
 const { IamAuthenticator } = require('ibm-watson/auth');
 
@@ -10,14 +10,10 @@ export async function main(event, context) {
     url: 'https://gateway.watsonplatform.net/tone-analyzer/api'
   });
   const data = JSON.parse(event.body);
-  const text = data.text;
-  const toneParams = {toneInput: { text }, contentType: 'application/json'};
-  let toneAnalysis;
-
-
+  const toneParams = {toneInput: { text: data }, contentType: 'application/json'};
   try {
-    toneAnalysis = await toneAnalyzer.tone(toneParams);
-    return toneAnalysis;
+    const result = await toneAnalyzer.tone(toneParams);
+    return success(result);
   } catch (e) {
     return failure({ status: false });
   }
